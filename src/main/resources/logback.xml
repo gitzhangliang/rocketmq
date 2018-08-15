@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 级别从高到低 OFF 、 FATAL 、 ERROR 、 WARN 、 INFO 、 DEBUG 、 TRACE 、 ALL -->
+<configuration>
+    <!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Logback.xsd"-->
+
+    <!-- 定义日志文件 输出位置 -->
+  <property name="log_dir" value="log/log"/>
+
+    <!--不过滤-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="errorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 果日志级别等于配置级别，过滤器会根据onMath(符合过滤条件) 和 onMismatch(不符合过滤条件)接收或拒绝日志。 -->
+        <!-- DENY,NEUTRAL,ACCEPT; -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log_dir}error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log_dir}error_%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log_dir}info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log_dir}info_%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="debugFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${log_dir}debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log_dir}debug_%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="logFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_dir}log.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log_dir}log_%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <!--所有包输出error-->
+        <appender-ref ref="errorFile"/>
+        <appender-ref ref="logFile" />
+        <!-- redis logstatsh -->
+        <!--<appender-ref ref="LOGSTASH" />-->
+    </root>
+
+</configuration>
